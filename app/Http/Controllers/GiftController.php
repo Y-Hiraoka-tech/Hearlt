@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use App\Models\Post;
 use App\Models\Ticket;
 use App\Models\PurchaseHistory;
@@ -24,13 +25,15 @@ class GiftController extends Controller
         return view('musics.giftselect', compact('artists','posts'));
     }
 
-    public function form(Post $post, $id, Request $request)
+    public function form($id)
     {
-        //ifも使う
-        
+        $value = session('gifted_user_id');
+        $user = User::where('id',$value)->first();
+        // dd($user);
+        // $username = $user->name;
         $artists = DB::table('artists')->where('id',Auth::id())->get();
         $post = Post::find($id);
-        return view('musics.giftform',compact('artists','post','request'));
+        return view('musics.giftform',compact('artists','post','value','user'));
     }
 
     public function userSelect(Request $request, $id)
@@ -41,24 +44,49 @@ class GiftController extends Controller
     }
 
     public function userStore(Request $request, $id){
-        $data = ['gifted_user_id'=>$request->gifted_user_id];
-        $request->session()->flashInput(empty(old()) ? $data : old());
-        return redirect()->route('gift.form.gifted',['id'=>$id]);
+        $request->session()->put('gifted_user_id',$request->gifted_user_id);
+        return redirect()->route('gift.form',['id'=>$id]);
     }
 
-    public function gift(Request $request, $id)
+    public function music(Request $request, $id)
     {
-        $gift = new GuftMusic();
+        $ticket_sum = Ticket::where('user_id',Auth::id())->sum('tickets');
+        $ticket = Ticket::where('user_id',Auth::id())->first();
+        
+        $music_ticket = Post::where('id',$id)->value('music_ticket');
+        if($ticket_sum > $music_ticket){
+            $ticket->tickets = $ticket->tickets-$music_ticket;
+            $ticket->save();
+            if($ticket->tickets < 0){
+                $minusticket = abs($ticket->tickets);
+                Ticket::where('user_id',Auth::id())->where('tickets','<','0')->delete();
+                $nextticket = Ticket::where('user_id',Auth::id())->first();
+                $nextticket->tickets = $nextticket->tickets-$minusticket;
+                $nextticket->save();
+            }
+        }
+        else{
+            return redirect()->route('purchase.gift');
+        }
+        $gift = new GiftMusic();
         $gift->user_id = Auth::id();
         $gift->gifted_user_id = $request->gifted_user_id;
         $gift->music_id = $id;
-        $gift->message = $request->message;
+        $gift->messege = $request->message;
         $gift->lyric = $request->lyric;
         $gift->method = $request->method;
         $gift->save();
-        
-        return redirect()->to('/home');
+        return redirect()->route('home');
     }
+
+    public function myMusic($id){
+        $post = Post::where('id',$id)->first();
+        $artist = Artist::where('id',$post->artist_id)->first();
+        $giftedmusic = GiftMusic::where('gifted_user_id',Auth::id())->where('music_id',$id)->first();
+        return view('ruts.mymusic',compact('post','artist','giftedmusic'));
+    }
+
+
 
     public function purchase()
     {

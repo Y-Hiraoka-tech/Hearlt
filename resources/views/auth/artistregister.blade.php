@@ -15,11 +15,14 @@
     <div class="body"> 
         <div class="row justify-content-center">
             <div class="col-8">
-                <h3 style="margin-bottom:20%;text-align: center;">アーティストアカウント情報を登録</h3>
+                <h3 style="text-align: center;">アーティストアカウント情報を登録</h3>
+                @if (session('error')) 
+                    <div style="color: red;font-size:15px">{{ session('error') }}</div>
+                @endif
+ 
                 <form method="POST" action="/register/artist/store">
                         @csrf
-
-                    <div class="form-group row">
+                    <div class="form-group row" style="margin-top: 20%;">
                                 <input id="name" type="text" class="block mt-1 w-full form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="名前" required autocomplete="name" autofocus>
 
                                 @error('name')

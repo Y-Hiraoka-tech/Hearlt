@@ -10,7 +10,8 @@ use App\Models\UserToArtistsFollowing;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Following;
-
+use App\Models\GiftMusic;
+use App\Models\Post;
 
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
     {
         $id = Auth::id();
         $users = DB::table('users')->where('id',$id)->get();
-        $posts = DB::table('posts')->where('artist_id',$id)->get();
+        $giftedmusics = GiftMusic::where('gifted_user_id',$id)->pluck('music_id');
+        $posts = Post::whereIn('id',$giftedmusics)->get();
         $userfollowings = DB::table('followings')->where('user_id',$id)->where('status',1)->get();
         $artistfollowings = UserToArtistsFollowing::where('user_id',$id)->get();
         $followers = DB::table('followings')->where('following_user_id',$id)->where('status',1)->get();
@@ -33,7 +35,12 @@ class UserController extends Controller
         $artistfollowings->count = count($artistfollowings);
         $followers->count = count($followers);
         $posts->count = count($posts);
-        return view('ruts.profile',compact('users','posts','userfollowings','artistfollowings','followers'));
+
+        // $giftedmusics = GiftMusic::where('gifted_user_id',$id)->get();
+        // $mymusics->messege = GiftMusic::where('gifted_user_id',$id)->pluck('messege');
+        // dd($mymusics->messege);
+
+        return view('ruts.profile',compact('users','posts','giftedmusics','userfollowings','artistfollowings','followers'));
     }
 
     public function search(Request $request) {

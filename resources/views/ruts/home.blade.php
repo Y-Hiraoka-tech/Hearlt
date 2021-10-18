@@ -28,7 +28,7 @@
 
      <div class="music" style="overflow-x:auto;scroll-snap-type: x;height:350px; display:flex;">
                 @foreach($posts as $post)
-                        <a href="{{ url('/gift/form/'.$post->id) }}" style="scroll-snap-align: start;">
+                        <a href="{{ url('/gift/form/'.$post->id.'/form') }}" style="scroll-snap-align: start;">
                             <img  src="{{asset('storage/uploads/'.$post->music_image)}}" style="width:100px;margin-right:5px;">
                         </a>
                 @endforeach

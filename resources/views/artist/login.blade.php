@@ -15,9 +15,12 @@
                     <div class="row justify-content-center">
                     <div class="col-8">
                     <h3 style="margin-bottom:20%;text-align: center;">アーティストアカウントにログインする</h3>
+                    @if (session('error')) 
+                    <div style="color: red;font-size:15px">{{ session('error') }}</div>
+                    @endif
                     <form method="POST" action="{{ route('artist.login') }}">
                         @csrf
-
+            
                         <div class="form-group row">
                                 <input id="email" type="email" class="block mt-1 w-full form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="名前" required autocomplete="email" autofocus>
 

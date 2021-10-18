@@ -40,13 +40,12 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('music/{id}', 'App\Http\Controllers\MusicController@show')->name('music.id');
     Route::get('gift/select/', 'App\Http\Controllers\GiftController@show')->name('gift.select');
     Route::get('gift/form/{id}/form', 'App\Http\Controllers\GiftController@form')->name('gift.form');
-    Route::get('gift/form/{id}/form/{gifted_user_id}', 'App\Http\Controllers\GiftController@form')->name('gift.form.gifted');
 
     Route::get('gift/form/{id}/users', 'App\Http\Controllers\GiftController@userSelect')->name('gift.form.user.select');
     Route::get('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore')->name('gift.form.user.store');
     Route::post('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore')->name('gift.form.user.store');
-    Route::get('gift/form/store', 'App\Http\Controllers\GiftController@gift');
-    Route::post('gift/form/store', 'App\Http\Controllers\GiftController@gift');
+    Route::get('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music')->name('gift.store');
+    Route::post('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music')->name('gift.store');
 
 //search画面からの遷移
     Route::get('search','App\Http\Controllers\UserController@index')->name('search');
@@ -67,6 +66,8 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 //profile画面からの遷移
     Route::get('/profile', 'App\Http\Controllers\UserController@show')->name('profile');
     Route::get('/profile/artist', 'App\Http\Controllers\ArtistsController@profile')->name('profile.artist');
+
+    Route::get('mymusic/show/{id}', 'App\Http\Controllers\GiftController@myMusic')->name('mymusic.show');
 
     Route::get('/setting','App\Http\Controllers\EditAccountController@index')->name('setting');
     Route::get('/setting/artist','App\Http\Controllers\EditArtistAccountController@index')->name('setting.artist');

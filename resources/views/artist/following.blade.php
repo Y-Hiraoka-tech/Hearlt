@@ -18,22 +18,21 @@
             <td style="padding: 3px 6px; border: 0px none;">Followers</td>
         </tr>
     </table>
-    
-        <form id="following" action="{{ route('follow.artist.store',$artists->id) }}" style="text-align:center;">
-            <button  type="submit" class="btn btn-primary"  style="text-align:center;background-color:#7B7575;">
-                フォローする
-            </button>
-        </form>
+
+    @if($artistFollow)
         <form id="followed" action="{{ route('unfollow.artist.store',$artists->id) }}" style="text-align:center;">
             <button type="submit" class="btn btn-primary"  style="text-align:center;background-color:#7B7575;">
                 フォロー中
             </button>
         </form> 
-
-    <script>
+    @else
+        <form id="following" action="{{ route('follow.artist.store',$artists->id) }}" style="text-align:center;">
+            <button  type="submit" class="btn btn-primary"  style="text-align:center;background-color:#7B7575;">
+                フォローする
+            </button>
+        </form>
+    @endif
     
-    
-    </script>
     <div class="introduction" style="width: 90%;margin:5% auto;text-align:center">
         <p>{{ $artists->introduction}}</p>
     </div>

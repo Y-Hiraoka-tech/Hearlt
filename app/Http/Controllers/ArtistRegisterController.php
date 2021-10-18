@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Artist;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Hash;
 
 class ArtistRegisterController extends Controller
@@ -17,7 +18,13 @@ class ArtistRegisterController extends Controller
     public function store(Request $request)
     {
         $id = Auth::id();
-        //インスタンス作成
+        $user = Artist::find($id);
+        if($user){
+            return redirect()->back()->withInput()->with('error','*複数のアカウントを作ることはできません。');
+        }
+        
+        else{
+            //インスタンス作成
         $artist = new Artist();
         $artist->name = $request->name;
         $artist->email = $request->email;
@@ -26,6 +33,7 @@ class ArtistRegisterController extends Controller
         $artist->save();
         
         return redirect()->to('/register/artist/2');
+        }
     }
     public function create2()
     {

@@ -26,8 +26,8 @@
                     </p>
                 </label>
 
-            <input type="button" id="gifted_user_id"  name="gifted_user_id" value="{{ $user->id }}" hidden>
-            <input type="submit" value="選択">
+                <input type="hidden" name="gifted_user_id" value="{{ $user->id }}">
+                <input type="submit" value="選択">
             </form>
             @endforeach
 </body>

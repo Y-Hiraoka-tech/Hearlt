@@ -48,7 +48,9 @@ class FollowController extends Controller
         $posts->count = count($posts);
         $followers->count = count($followers);
 
-        return view('artist.following',compact('artists','posts','followers'));
+        $artistFollow = UserToArtistsFollowing::where('user_id',Auth::id())->where('following_artist_id',$id)->exists();
+
+        return view('artist.following',compact('artists','posts','followers','artistFollow'));
     }
     
     public function following($id){

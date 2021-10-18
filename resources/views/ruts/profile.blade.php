@@ -36,13 +36,14 @@
     
     <div class="col-12" style="border-top:solid 1px;overflow:auto;width:100%;height:350px;">
         <div class="row">
-                <!-- @foreach($posts as $post)
-                <div class="col-4"  style="padding: 0 0;">
-                    <a href="{{ url('posts/show/'.$post->id) }}">
+        @foreach($posts as $post)
+            <div class="col-4"  style="padding: 0 0;">
+                <a href="{{ route('mymusic.show',$post->id) }}">
                     <img  src="{{asset('storage/uploads/'.$post->music_image)}}" style="width: 100%;">
-                    </a>
-                </div>
-                @endforeach -->
+                    <p>{{ $post->messege }}</p>
+                </a>
+            </div>
+        @endforeach
         </div>
     </div>
     

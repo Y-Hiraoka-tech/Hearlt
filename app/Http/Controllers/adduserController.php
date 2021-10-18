@@ -42,11 +42,6 @@ class adduserController extends Controller
         $user->save();
     }
     
-    $ticket = new Ticket();
-    $id = User::find(auth()->id());
-    $ticket->user_id = $id;
-    $ticket->tickets = 0;
-    $ticket->save();
 
     return redirect()->route('home');
     }

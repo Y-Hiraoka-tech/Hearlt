@@ -18,7 +18,7 @@
         <a href="{{ url('/register/artist') }}">アーティスト登録</a>
     </div>
     <div style="text-align: center;margin-top:50%;">
-        <h1 style="font-family: 'Turret Road', cursive;">GIFT MUSIC</h1>
+        <h1 style="font-family: 'Turret Road', cursive;">Hearlt</h1>
     </div>
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0" style="margin-top: 70%;text-align:center">
             @if (Route::has('login'))

@@ -81,7 +81,7 @@ class PostController extends Controller
         $post->artist_id = $id;
         $post->save();
         
-        return redirect()->to('/profile');
+        return redirect()->to('/profile/artist');
     }
 
     /**
@@ -90,10 +90,9 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post, $id)
     {
-        $id = Auth::id();
-        $artists = DB::table('artists')->where('id',$id)->get();
+        $artists = DB::table('artists')->where('id',Auth::guard('artist')->id())->get();
         $posts = DB::table('posts')->where('id',$id)->get();
         return view('posts.detail',compact('artists','posts'));
     }

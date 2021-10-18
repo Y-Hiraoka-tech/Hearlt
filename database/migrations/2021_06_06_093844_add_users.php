@@ -18,7 +18,6 @@ class AddUsers extends Migration
             $table->string('phone');
             $table->string('username')->default('ONZO.user'.rand(000000,999999));
             $table->string('introduction')->default();
-            $table->string('tickets')->default(0);
         });
     }
 
