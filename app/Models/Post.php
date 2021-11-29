@@ -18,5 +18,9 @@ class Post extends Model
     {
         return $this->hasOne(GiftMusic::class, 'music_id');
     }
+    public function artist()
+    {
+        return $this->belongsTo(Artist::class);
+    }
 
 }

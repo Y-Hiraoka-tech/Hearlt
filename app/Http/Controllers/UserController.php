@@ -46,6 +46,7 @@ class UserController extends Controller
     public function search(Request $request) {
         $keyword_name = $request->name;
         $keyword_username = $request->username;
+        $keyword_artistname = $request->artistname;
         if(!empty($keyword_name) && empty($keyword_username)) {
             $query = User::query();
             $users = $query->where('name','like', '%' .$keyword_name. '%')->get();
@@ -65,8 +66,29 @@ class UserController extends Controller
             ]);
         }
         else {
-            $message = "検索結果はありません。";
-            return view('ruts.searchresult')->with('message',$message);
+            if(!empty($keyword_name) && empty($keyword_artistname)) {
+                $query = Artist::query();
+                $artists = $query->where('name','like', '%' .$keyword_name. '%')->get();
+                $message = "「". $keyword_name."」を含む名前の検索が完了しました。";
+                return view('ruts.searchresult')->with([
+                  'artists' => $artists,
+                  'message' => $message,
+                ]);
+             }
+            elseif(empty($keyword_name) && !empty($keyword_artistname)) {
+                  $query = Artist::query();
+                  $artists = $query->where('artistname','like', '%' .$keyword_artistname. '%')->get();
+                  $message = "「". $keyword_username."」を含む名前の検索が完了しました。";
+                  return view('ruts.searchresult')->with([
+                  'artists' => $artists,
+                  'message' => $message,
+                  ]);
+          }
+  
+  
+              $message = "検索結果はありません。";
+              return view('ruts.searchresult')->with('message',$message);
         }
     }
-}
+ }
+

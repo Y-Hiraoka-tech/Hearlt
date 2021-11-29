@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Artist;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class PostController extends Controller
      */
     public function index(){
         $id = Auth::id();
-        $posts = DB::table('posts')->where('artist_id',$id)->get();
+        $posts = Post::where('artist_id',$id)->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -47,29 +48,6 @@ class PostController extends Controller
         $image_path = $request->file('music_image')->store('public/uploads/');
         $file_path = $request->file('music_file')->store('public/uploads/');
         $trial_path = $request->file('music_trial')->store('public/uploads/');
-        // if ($img = $request->music_image) {
-        //     $imgName= $img->getClientOriginalName();
-        //     $target_path = storage_path('uploads/');
-        //     $img->move($target_path,$imgName);
-        // }else {
-        //     $imgName = "";
-        // }
-
-        // if ($file = $request->music_file) {
-        //     $fileName= $file->getClientOriginalName();
-        //     $target_path = storage_path('uploads/');
-        //     $file->move($target_path,$fileName);
-        // }else {
-        //     $fileName = "";
-        // }
-        // if ($trial = $request->music_trial) {
-        //     $trialName= $trial->getClientOriginalName();
-        //     $target_path = storage_path('uploads/');
-        //     $trial->move($target_path,$trialName);
-        // }else {
-        //     $trialName = "";
-        // }
-
         //インスタンス作成
         $post = new Post();
         $post->name = $request->name;
@@ -92,7 +70,7 @@ class PostController extends Controller
      */
     public function show(Post $post, $id)
     {
-        $artists = DB::table('artists')->where('id',Auth::guard('artist')->id())->get();
+        $artists = Artist::where('id',Auth::guard('artist')->id())->get();
         $posts = DB::table('posts')->where('id',$id)->get();
         return view('posts.detail',compact('artists','posts'));
     }
@@ -119,7 +97,7 @@ class PostController extends Controller
     public function update(Request $request)
     {
         $id = Auth::id();
-        $post = DB::table('posts')->where('id',$id)->first();   
+        $post = Post::where('id',$id)->first();   
 
         //$this->validate($request,Post::$rules);
         $image_path = $request->file('music_image')->store('public/uploads/');

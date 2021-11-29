@@ -58,4 +58,8 @@ class Artist extends Authenticatable
     {
         return $this->phone;
     }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

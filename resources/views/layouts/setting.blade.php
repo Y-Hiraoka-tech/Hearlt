@@ -24,14 +24,16 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light" style="background-color: black;color:white;">
-        <a href="{{ url('/profile') }}"> 
-                <input type="button"  value="＜" style="background-color:black;color:white;">
-        </a>
-                <div style="margin: 0 auto;">
-                Settings
-                </div>
-        </nav>
+            <nav class="navbar" style="background-color: black;color:white;">
+            <a href="{{ url('/profile') }}"> 
+                    <input type="button"  value="＜" style="background-color:black;color:white;">
+            </a>
+            <p style="margin: 0 auto;">
+                    Settings
+            </p>
+            </nav>
+        </div>
+        
         <main>
             @yield('content')
         </main>
