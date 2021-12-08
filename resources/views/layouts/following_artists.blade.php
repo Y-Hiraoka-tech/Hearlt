@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SEARCH @yield('search')</title>
+    <title>Following Artists@yield('purchase')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -20,17 +20,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/search.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body style="background: #272525;color:white;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light" style="justify-content: center;background-color: black;color:white;">
-                <p style="margin-bottom: 0;">SEARCH</p>
+        <nav class="navbar" style="justify-content: center;position: relative; border-bottom:solid 1px;">
+                <input type="button" onclick="history.back()" value="＜" style="background-color:black;color:white;position: absolute;left: 0;">
+                <div>
+                <p style="margin-bottom: 0;">Following Artists</p>
+                </div>
         </nav>
         <main>
             @yield('content')
         </main>
+    @extends('layouts.app_footer')
     </div>
 </body>
 </html>

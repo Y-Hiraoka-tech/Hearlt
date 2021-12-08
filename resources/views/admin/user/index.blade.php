@@ -1,8 +1,9 @@
 @extends('layouts.app')
-@section('title', 'TOP page')
+@section('title', 'User')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
+<h2 class="mb-3">ユーザー管理</h2>
     <div class="row">
         <!-- メイン -->
         <div class="col-12">
@@ -26,7 +27,7 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone}}</td>
                         <td>{{ $user->introduction }}</td>
-                        <td><img src="{{asset('storage/uploads/'.$user->user_image)}}"></td>
+                        <td><img src="{{asset('storage/uploads/'.$user->user_image)}}" style="width:100px"></td>
                         <td>
                         <a href="{{ url('editusers/edit/'.$user->id) }}" class="btn btn-dark">編集する</a>
                         @auth

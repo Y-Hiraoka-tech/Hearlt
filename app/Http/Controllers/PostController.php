@@ -19,8 +19,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $id = Auth::id();
-        $posts = Post::where('artist_id',$id)->get();
+        $posts = Post::get();
         return view('posts.index', compact('posts'));
     }
 

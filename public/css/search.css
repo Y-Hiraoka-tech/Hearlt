@@ -1,0 +1,18 @@
+form{
+  margin-top: 1.5rem;
+}
+.nav-tabs{
+  margin:0 auto;
+  width: 90%;
+}
+.nav-item .nav-link{
+  color: white;
+}
+.nav-item .nav-link.active{
+  background-color: #F16D0E;
+  color:white;
+}
+.form-group input{
+  background-color: #272525;
+  color:white;
+}

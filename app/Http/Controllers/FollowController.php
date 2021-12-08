@@ -31,7 +31,7 @@ class FollowController extends Controller
         $userRequest = DB::table('followings')->where('user_id',Auth::id())->where('following_user_id',$id)->where('status',0)->exists();
 
         if(Auth::id() == $id){
-            return view('ruts.profile',compact('users','posts','userfollowings','artistfollowings','followers'));
+            return redirect()->route('profile');
         }
         else{
             return view('user.userprofile',compact('users','posts','userfollowings','artistfollowings','followers','userfollow','userRequest'));

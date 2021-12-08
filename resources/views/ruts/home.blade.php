@@ -6,11 +6,11 @@
             <div class="contents-tittle mx-2 my-4" style="display: flex;">
                 <h5>本日のおすすめ</h5>
                 <div class="more ml-auto">
-                    <a href="{{ url('/gift/select/')}}">▶︎もっとみる</a> 
+                    <a href="{{route('recommend.music')}}">▶︎もっとみる</a> 
                 </div>
             </div>
             <div class="music" style="text-align: center;margin-bottom: 1rem;">
-                <div class="row" style="display: inline-block;vertical-align: middle;">
+                <div class="row" style="display: inline-block;vertical-align: middle;width:100%">
                     <div class="col-3 ml-auto" style="display: inline-block;vertical-align: middle;">
                         <a href="{{ url('/music/'.$recommends[0]->id) }}" style="scroll-snap-align: start;">
                             <img  src="{{asset('storage/uploads/'.$recommends[0]->music_image)}}" style="width:100%;margin-right:1rem;">
@@ -40,7 +40,7 @@
             <div class="contents-tittle mx-2 my-2" style="display: flex;">
                 <h5>フォロー中のアーティスト</h5>  
             <div class="more ml-auto">
-                <a href="{{ url('/gift/select/')}}">▶︎もっとみる</a> 
+                <a href="{{route('following.artists')}}">▶︎もっとみる</a> 
             </div>
             </div>
             <div class="row">
@@ -62,16 +62,16 @@
                 </div> 
             </div>
             @foreach($posts as $post) 
-            <div class="have-artist-set" style="display: flex;">
+            <div class="have-artist-set" style="display: flex;padding-bottom:.5rem;margin-bottom:0.5rem;border-bottom:1px solid white">
             <a href="{{ url('/gift/form/'.$post->id.'/form') }}" style="width:100%">
                 <div class="row">
-                    <div class="col-3" style="display: flex;">
-                        <img  src="{{asset('storage/uploads/'.$post->music_image)}}" style="width: 100%;margin-bottom: 1rem;">
+                    <div class="col-2" style="margin:auto auto;">
+                        <img  src="{{asset('storage/uploads/'.$post->music_image)}}" style="width: 100%;height:auto;">
                     </div>
-                    <div class="col-9 mr-auto" style="margin:auto 0; display:flex">
+                    <div class="col-10 mr-auto" style="margin:auto 0; display:flex">
                         <div class="have-artist-set-content mr-auto">
-                            <p style="font-size: 20px;color:white">{{$post->name}}</p>
-                            <p style="color: #7B7575;margin: 0;">{{$post->artist->name}}</p>
+                            <p style="font-size: 16px;color:white;margin-bottom:0;">{{$post->name}}</p>
+                            <p style="color: #7B7575;margin-bottom:0;">{{$post->artist->name}}</p>
                         </div>
                         <div class="have-artist-set-svg ml-auto" style="display: flex;margin:auto 0;">
                             <svg width="30" height="43" viewBox="0 0 30 43" fill="none" xmlns="http://www.w3.org/2000/svg">

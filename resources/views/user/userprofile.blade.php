@@ -51,13 +51,13 @@
     
         <div class="col-12 music" style="border-top:solid 1px;overflow:auto;width:100%;">
             <div class="row">
-                <!-- @foreach($posts as $post)
+                @foreach($posts as $post)
                 <div class="col-4"  style="padding: 0 0;">
-                    <a href="{{ url('posts/show/'.$post->id) }}">
+                    <a href="{{ route('music',['id' => $post->id]) }}">
                     <img  src="{{asset('storage/uploads/'.$post->music_image)}}" style="width: 100%;">
                     </a>
                 </div>
-                @endforeach -->
+                @endforeach
             </div>
         </div> 
 </body>

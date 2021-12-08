@@ -13,22 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class ArtistsController extends Controller
 {
-    public function index(){
-        $artist_id = Auth::id();
-        $music_id = Auth::id();
-        $posts = Post::with('artist')->get();
-        $recommends = Post::inRandomOrder()->take(3)->get();
-        $recommend_artist = Artist::where('id', $recommends[1]->artist_id)->value('name');
-        $followed_artists_id = UserToArtistsFollowing::where('user_id',Auth::id())->pluck('following_artist_id');
-        if(count($followed_artists_id) <= 3){
-            $followed_artists = Artist::whereIn('id', $followed_artists_id)->get();
-        }
-        else{
-            $followed_artists = Artist::whereIn('id', $followed_artists_id)->inRandomOrder()->take(3)->get();
-        }
-        return view('ruts.home', compact('posts','recommends','recommend_artist','followed_artists'));
-    }
-
     public function show(Artist $artist)
     {
         $id = Auth::id();

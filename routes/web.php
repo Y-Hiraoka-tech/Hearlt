@@ -35,17 +35,19 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     })->name('dashboard');
 
 //home画面からの遷移
-    Route::get('home', 'App\Http\Controllers\ArtistsController@index' )->name('home');
+    Route::get('home', 'App\Http\Controllers\TopController@index' )->name('home');
+    Route::get('recommend', 'App\Http\Controllers\TopController@recommend')->name('recommend.music');
+    Route::get('following/artists', 'App\Http\Controllers\TopController@followingArtists')->name('following.artists');
     Route::get('{id}/top', 'App\Http\Controllers\ArtistsController@show')->name('artist.top');
-    Route::get('music/{id}', 'App\Http\Controllers\MusicController@show')->name('music.id');
+    Route::get('music/{id}', 'App\Http\Controllers\MusicController@show')->name('music');
     Route::get('gift/select/', 'App\Http\Controllers\GiftController@show')->name('gift.select');
     Route::get('gift/form/{id}/form', 'App\Http\Controllers\GiftController@form')->name('gift.form');
 
     Route::get('gift/form/{id}/users', 'App\Http\Controllers\GiftController@userSelect')->name('gift.form.user.select');
     Route::get('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore')->name('gift.form.user.store');
-    Route::post('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore')->name('gift.form.user.store');
+    Route::post('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore');
     Route::get('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music')->name('gift.store');
-    Route::post('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music')->name('gift.store');
+    Route::post('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music');
 
 //search画面からの遷移
     Route::get('search','App\Http\Controllers\UserController@index')->name('search');
@@ -84,7 +86,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 
     Route::get('/purchase/gift/','App\Http\Controllers\GiftController@purchase')->name('purchase.gift');
     Route::get('/purchase/gift/store/','App\Http\Controllers\GiftController@store')->name('purchase.gift.store');
-    Route::post('/purchase/gift/store/','App\Http\Controllers\GiftController@store')->name('purchase.gift.store');
+    Route::post('/purchase/gift/store/','App\Http\Controllers\GiftController@store');
     
     Route::get('register/confirm', function(){
         return view('ruts.usercomfirm');
@@ -97,17 +99,15 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::post('/register/2','App\Http\Controllers\adduserController@storeMyImg');
 });    
 
-Route::get('admin/login','App\Http\Controllers\Auth\AdminLoginController@loginView')->name('admin.login');
-Route::post('admin/login','App\Http\Controllers\Auth\AdminLoginController@login')->name('admin.login.post');
-
 Route::get('artist/login','App\Http\Controllers\Auth\ArtistLoginController@loginView')->name('artist.login');
 Route::post('artist/login','App\Http\Controllers\Auth\ArtistLoginController@login')->name('artist.login.post');
 
+Route::get('admin/login','App\Http\Controllers\Auth\AdminLoginController@loginView')->name('admin.login');
+Route::post('admin/login','App\Http\Controllers\Auth\AdminLoginController@login')->name('admin.login.post');
 
 //Artist権限をつける
 Route::group(['middleware' => ['artist']], function(){
-    //これをやるとshowの場合画像などが読み込まれなくなる　why？
-    Route::get('posts', 'App\Http\Controllers\PostController@index')->name('post.index');
+
     Route::get('posts/show/{id}', 'App\Http\Controllers\PostController@show')->name('post.show');
     Route::get('posts/create', 'App\Http\Controllers\PostController@create')->name('post.create');
     Route::get('posts/store', 'App\Http\Controllers\PostController@store');
@@ -123,15 +123,28 @@ Route::group(['middleware' => ['artist']], function(){
 
 
 Route::group(['middleware' => ['admin']], function(){
-    Route::resource('musics', 'App\Http\Controllers\PostController', ['only' => ['index','show', 'create', 'store',]]);
-    Route::get('musics/edit/{id}', 'App\Http\Controllers\PostController@edit');
-    Route::post('musics/update', 'App\Http\Controllers\PostController@update')->name('music.update');
-    Route::delete('musics/delete/{id}', 'App\Http\Controllers\PostController@destroy');
+    //dashboard
+    Route::get('admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')->name('admin.dashboard'); 
+    //music
+    Route::get('admin/music', 'App\Http\Controllers\AdminPostController@index')->name('admin.music.index');
+    Route::get('admin/music/edit/{id}', 'App\Http\Controllers\AdminPostController@edit')->name('admin.music.edit');
+    Route::post('admin/music/update', 'App\Http\Controllers\AdminPostController@update')->name('admin.music.update');
+    Route::delete('admin/music/delete/{id}', 'App\Http\Controllers\AdminPostController@destroy')->name('admin.music.delete');
 
-    Route::get('editusers', 'App\Http\Controllers\EditUserController@index')->name('edituser');
-    Route::get('editusers/edit/{id}','App\Http\Controllers\EditUserController@edit');
-    Route::post('editusers/update', 'App\Http\Controllers\EditUserController@update')->name('user.update');
-    Route::delete('editusers/delete/{id}', 'App\Http\Controllers\EdituserController@destroy');
+    //User
+    Route::get('admin/user', 'App\Http\Controllers\AdminUserController@index')->name('admin.user.index');
+    Route::get('admin/user/edit/{id}','App\Http\Controllers\AdminUserController@edit')->name('admin.user.edit');
+    Route::post('admin/user/update', 'App\Http\Controllers\AdminUserController@update')->name('admin.user.update');
+    Route::delete('admin/user/delete/{id}', 'App\Http\Controllers\AdminUserController@destroy')->name('admin.user.delete');
+
+    //Artist
+    Route::get('admin/artist', 'App\Http\Controllers\AdminArtistController@index')->name('admin.artist.index');
+    //follow
+    Route::get('admin/follow', 'App\Http\Controllers\AdminFollowController@index')->name('admin.follow.index');
+    //gift
+    Route::get('admin/gift', 'App\Http\Controllers\AdminGiftController@index')->name('admin.gift.index');
+    //ticket
+    Route::get('admin/ticket', 'App\Http\Controllers\AdminTicketController@index')->name('admin.ticket.index');
 });
 
 Auth::routes();

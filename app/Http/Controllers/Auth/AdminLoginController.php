@@ -20,7 +20,7 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('musics');
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors([

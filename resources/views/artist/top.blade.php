@@ -1,3 +1,4 @@
+
 @extends('layouts.artist_top')
 @section('content')
     @foreach($artists as $artist)
