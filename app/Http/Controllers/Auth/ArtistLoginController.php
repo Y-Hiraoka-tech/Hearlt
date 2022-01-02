@@ -34,4 +34,9 @@ class ArtistLoginController extends Controller
         ]);
 
     }
+    public function logout(Request $request)
+    {
+        Auth::guard('artist')->logout();
+        return redirect(route('profile'));
+    }
 }

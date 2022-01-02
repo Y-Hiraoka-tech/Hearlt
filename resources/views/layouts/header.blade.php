@@ -7,13 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Music @yield('music')</title>
+    <title>@yield('title')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>
-    <script src="{{ asset('js/music.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,22 +20,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/music.css') }}" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background: #272525;color:white;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light" style="border-bottom:solid 1px; background-color: black;color:white;">
-                <input type="button" onclick="history.back()" value="＜" style="background-color:black;color:white;">
-                <div style="margin: 0 auto;">
-                Music
+        <nav class="navbar navtbar-expand-md navbar-ligh" style="justify-content: center;position: relative; border-bottom:solid 1px;">
+                <input type="button" onclick="history.back()" value="＜" style="background-color:black;color:white;position: absolute;left: 0;">
+                <div>
+                <p style="margin-bottom: 0;">@yield('title')</p>
                 </div>
         </nav>
         <main>
             @yield('content')
         </main>
-    </div>
     @extends('layouts.app_footer')
+    </div>
 </body>
 </html>

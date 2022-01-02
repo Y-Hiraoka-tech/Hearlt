@@ -1,0 +1,36 @@
+.target1.is-hidden {
+  display: none;
+}
+.target2{
+    display:none;
+}
+.target2.is-appear{
+    display:block;
+}
+
+
+audio {
+  display: none
+}
+#time{
+  display: flex;
+}
+#duration{
+  margin-left: auto;
+}
+.control-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#play i{
+  background: #696969;
+  padding:1rem;
+  border-radius: 50%;
+}
+#pre, #next{
+  margin: 0 1rem;
+}
+p #duration{
+  padding-bottom: 0;
+}

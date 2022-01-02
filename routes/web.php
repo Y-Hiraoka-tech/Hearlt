@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('gift/form/{id}/form', 'App\Http\Controllers\GiftController@form')->name('gift.form');
 
     Route::get('gift/form/{id}/users', 'App\Http\Controllers\GiftController@userSelect')->name('gift.form.user.select');
+    Route::post('gift/form/{id}/users', 'App\Http\Controllers\GiftController@userSelect')->name('gift.form.user.search');
     Route::get('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore')->name('gift.form.user.store');
     Route::post('gift/form/{id}/users/store', 'App\Http\Controllers\GiftController@userStore');
     Route::get('/gift/form/{id}/form/store', 'App\Http\Controllers\GiftController@music')->name('gift.store');
@@ -69,7 +70,10 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/profile', 'App\Http\Controllers\UserController@show')->name('profile');
     Route::get('/profile/artist', 'App\Http\Controllers\ArtistsController@profile')->name('profile.artist');
 
-    Route::get('mymusic/show/{id}', 'App\Http\Controllers\GiftController@myMusic')->name('mymusic.show');
+    Route::get('mymusic/show/{id}', 'App\Http\Controllers\UserController@music')->name('mymusic.show');
+
+    Route::get('/announcement','App\Http\Controllers\AnnouncementController@show')->name('announcement');
+    Route::get('/announcement/{id}','App\Http\Controllers\AnnouncementController@read')->name('announcement.read');
 
     Route::get('/setting','App\Http\Controllers\EditAccountController@index')->name('setting');
     Route::get('/setting/artist','App\Http\Controllers\EditArtistAccountController@index')->name('setting.artist');
@@ -82,7 +86,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/editaccount/{id}','App\Http\Controllers\EditAccountController@edit')->name('account.edit');
     Route::post('/editaccount/update', 'App\Http\Controllers\EditAccountController@update')->name('account.update');
     Route::get('/user/private/{id}','App\Http\Controllers\EditAccountController@private')->name('user.private');
-    Route::post('/user/private/update','App\Http\Controllers\EditAccountController@PrivateUpdatpe')->name('user.private.update');
+    Route::post('/user/private/update','App\Http\Controllers\EditAccountController@privateUpdate')->name('user.private.update');
 
     Route::get('/purchase/gift/','App\Http\Controllers\GiftController@purchase')->name('purchase.gift');
     Route::get('/purchase/gift/store/','App\Http\Controllers\GiftController@store')->name('purchase.gift.store');
@@ -119,6 +123,7 @@ Route::group(['middleware' => ['artist']], function(){
     Route::delete('posts/delete/{id}', 'App\Http\Controllers\PostController@destroy');
 
     Route::get('/profile/artist', 'App\Http\Controllers\ArtistsController@profile')->name('profile.artist');
+    Route::post('artist/logout', 'App\Http\Controllers\Auth\ArtistLoginController@logout')->name('artist.logout');
 });
 
 

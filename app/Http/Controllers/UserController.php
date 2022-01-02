@@ -25,7 +25,8 @@ class UserController extends Controller
     //自分のprofile欄のやつ
     public function show()
     {
-        if($this->middleware('artist')){
+        if(Auth::guard('artist')->check())
+        {
             return redirect()->route('profile.artist');
         }
         else{
@@ -40,12 +41,12 @@ class UserController extends Controller
             $artistfollowings->count = count($artistfollowings);
             $followers->count = count($followers);
             $posts->count = count($posts);
-
-            // $giftedmusics = GiftMusic::where('gifted_user_id',$id)->get();
-            // $mymusics->messege = GiftMusic::where('gifted_user_id',$id)->pluck('messege');
-            // dd($mymusics->messege);
-
-            return view('ruts.profile',compact('users','posts','giftedmusics','userfollowings','artistfollowings','followers'));
+            //通知機能
+            // $send_announcement = GiftMusic::where('read',false)->where('user_id',$id)->get();
+            // $send_announcement->count = count($send_announcement);
+            $receive_announcement = GiftMusic::where('read',false)->where('gifted_user_id',$id)->get();
+            $receive_announcement->count = count($receive_announcement);
+            return view('ruts.profile',compact('users','posts','giftedmusics','userfollowings','artistfollowings','followers','receive_announcement'));
         }
     }
 
@@ -72,49 +73,15 @@ class UserController extends Controller
             $message = "検索結果はありません。";
             return view('ruts.searchresult', compact('message'));
         }
-
-        // if(!empty($keyword_name) && empty($keyword_username)) {
-        //     $query = User::query();
-        //     $users = $query->where('name','like', '%' .$keyword_name. '%')->get();
-        //     $message = "「". $keyword_name."」を含む名前の検索が完了しました。";
-        //     return view('ruts.searchresult')->with([
-        //       'users' => $users,
-        //       'message' => $message,
-        //     ]);
-        // }
-        // elseif(empty($keyword_name) && !empty($keyword_username)) {
-        //     $query = User::query();
-        //     $users = $query->where('username','like', '%' .$keyword_username. '%')->get();
-        //     $message = "「". $keyword_username."」を含む名前の検索が完了しました。";
-        //     return view('ruts.searchresult')->with([
-        //       'users' => $users,
-        //       'message' => $message,
-        //     ]);
-        // }
-        // else {
-        //     if(!empty($keyword_name) && empty($keyword_artistname)) {
-        //         $query = Artist::query();
-        //         $artists = $query->where('name','like', '%' .$keyword_name. '%')->get();
-        //         $message = "「". $keyword_name."」を含む名前の検索が完了しました。";
-        //         return view('ruts.searchresult')->with([
-        //           'artists' => $artists,
-        //           'message' => $message,
-        //         ]);
-        //      }
-        //     elseif(empty($keyword_name) && !empty($keyword_artistname)) {
-        //           $query = Artist::query();
-        //           $artists = $query->where('artistname','like', '%' .$keyword_artistname. '%')->get();
-        //           $message = "「". $keyword_username."」を含む名前の検索が完了しました。";
-        //           return view('ruts.searchresult')->with([
-        //           'artists' => $artists,
-        //           'message' => $message,
-        //           ]);
-        //   }
-  
-  
-        //       $message = "検索結果はありません。";
-        //       return view('ruts.searchresult')->with('message',$message);
-        // }
     }
+
+    public function music($id){
+        $post = Post::where('id',$id)->first();
+        $artist = Artist::where('id',$post->artist_id)->first();
+        $giftedmusic = GiftMusic::with('user','gifted_user')->where('gifted_user_id',Auth::id())->where('music_id',$id)->first();
+        return view('ruts.mymusic',compact('post','artist','giftedmusic'));
+    }
+
+
  }
 

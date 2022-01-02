@@ -18,10 +18,11 @@ class GiftMusic extends Migration
             $table->string('user_id');
             $table->string('gifted_user_id');
             $table->string('music_id');
-            $table->string('messege');
+            $table->string('message');
             $table->string('lyric');
             $table->string('method');
-            $table->rememberToken();
+            $table->string('address')->default(null);
+            $table->boolean('read')->default(false)->comment('未読 or 既読');
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@
       <p class="mt-3">ユーザー管理</p>
     </a>
     <a href="{{route('admin.artist.index')}}" class="admin-item col-4 text-center" style="border:1px solid #808080; padding:2rem;">
-      <img src="{{asset('storage/default/artist_icon.svg')}}" style="width: 70px;">
+      <img src="{{asset('storage/default/artist_icon.svg')}}" style="width: 70px;color:white">
       <p class="mt-3">アーティスト管理</p>
     </a>
     <a href="{{route('admin.music.index')}}" class="admin-item col-4 text-center" style="border:1px solid #808080; padding:2rem;">

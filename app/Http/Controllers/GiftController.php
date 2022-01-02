@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\TicketPrice;
-use GrahamCampbell\ResultType\Success;
+use Stripe\Stripe;
+use Stripe\Charge;
 
 class GiftController extends Controller
 {
@@ -29,20 +30,25 @@ class GiftController extends Controller
     {
         $value = session('gifted_user_id');
         $user = User::where('id',$value)->first();
-        // dd($user);
-        // $username = $user->name;
-        $artists = DB::table('artists')->where('id',Auth::id())->get();
-        $post = Post::find($id);
-        return view('musics.giftform',compact('artists','post','value','user'));
+        $post = Post::with('artist')->where('id',$id)->first();
+        return view('musics.giftform',compact('post','value','user'));
     }
 
     public function userSelect(Request $request, $id)
     {
-        $users = User::all();
+        $users = User::where('id','!=', Auth::id())->get();
         $post = Post::find($id);
-        return view('musics.giftUserSelect',compact('users','post'));
+        $name_keyword = $request->input('name');
+        if(!empty($name_keyword)) {
+            $search_users= User::where('username', 'like', '%'.$name_keyword.'%')->where('id','!=', Auth::id())->get();
+            $message = "「". $name_keyword."」を含む名前の検索が完了しました。";
+            return view('musics.giftUserSelect', compact('users','post','search_users','message'));
+        }
+        else{
+            $message = "検索結果はありません。";
+            return view('musics.giftUserSelect', compact('users','post','message'));
+        }
     }
-
     public function userStore(Request $request, $id){
         $request->session()->put('gifted_user_id',$request->gifted_user_id);
         return redirect()->route('gift.form',['id'=>$id]);
@@ -68,37 +74,45 @@ class GiftController extends Controller
         else{
             return redirect()->route('purchase.gift');
         }
+        $this->validate($request,GiftMusic::$rules);
         $gift = new GiftMusic();
         $gift->user_id = Auth::id();
         $gift->gifted_user_id = $request->gifted_user_id;
         $gift->music_id = $id;
-        $gift->messege = $request->message;
+        $gift->message = $request->message;
         $gift->lyric = $request->lyric;
         $gift->method = $request->method;
+        if($request->method == 1){
+            $gift->address = $request->address;
+        }
+        else{
+            $gift->address = '';
+        }
         $gift->save();
         return redirect()->route('home');
+
     }
-
-    public function myMusic($id){
-        $post = Post::where('id',$id)->first();
-        $artist = Artist::where('id',$post->artist_id)->first();
-        $giftedmusic = GiftMusic::where('gifted_user_id',Auth::id())->where('music_id',$id)->first();
-        return view('ruts.mymusic',compact('post','artist','giftedmusic'));
-    }
-
-
 
     public function purchase()
     {
         $ticketprices = TicketPrice::all();
         $id = Auth::id();
         $ticket_sum = Ticket::where('user_id',$id)->sum('tickets');
+        
         return view('musics.purchase',compact('ticketprices','ticket_sum'));
     }
     public function store(Request $request)
     {
-        // $id = Auth::id();
-        // DB::table('users')->where('id',$id)->update(['tickets' => 2]);
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));//シークレットキー
+        $ticket_money = TicketPrice::where('ticket',$request->tickets)->value('money');
+        $charge = Charge::create(array(
+                'amount' => $ticket_money,
+                'currency' => 'jpy',
+                'source'=> request()->stripeToken,
+            ));
+
+
         $id = Auth::id();
         $ticket = new Ticket();
         $ticket->user_id = $id;
@@ -114,6 +128,6 @@ class GiftController extends Controller
 
         $history->save();
 
-        return redirect()->to('/profile');
+        return back();
     }
 }

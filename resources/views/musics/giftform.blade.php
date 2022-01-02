@@ -2,12 +2,11 @@
 @section('title', 'detail page')
 
 @section('content')
-@foreach($artists as $artist)
 <body style="background: #272525;color:white;">
                 <div style="padding:7% 7%;border-bottom:solid 1px;">
                     <div> 
                         <img id="preview" src="{{asset('storage/uploads/'.$post->music_image)}}" style="width:30%;display:inline-block;">
-                        <p style="display:inline-block;vertical-align:middle;text-align:center;width:65%;">{{ $post->name }}<br>{{ $artist->name }}</p>
+                        <p style="display:inline-block;vertical-align:middle;text-align:center;width:65%;">{{ $post->name }}<br>{{ $post->artist->name }}</p>
                     </div>
                     <div>
                         <p style="text-align: right;margin-bottom:0;">ticket：{{ $post->music_ticket }}</p>
@@ -39,11 +38,15 @@
 
                 <div style="margin-bottom: 3%;">
                     <p style="margin-bottom: 0;">アナログ・デジタルの選択</p>
-                    <select class="method" name="method" style="background:#7B7575;color:#444444;border-radius:10px;padding: 3px;width:100%;">
+                    <select id="method" class="method" name="method" onchange="entryChange2();" style="background:#7B7575;color:#444444;border-radius:10px;padding: 3px;width:100%;">
                         <option selected>選択</option>
                         <option value="1">アナログ</option>
                         <option value="2">デジタル</option>
                     </select>
+                </div>
+                <div id="address" style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0;">住所を入力してください</p>
+                    <input name="address" style="background-color:#7B7575;width:100%;border-radius:10px;">
                 </div>
                  <div class="text-center" style="margin-top: 15%;">
                     <input class="btn" type="submit" value="GIFT" style="background-color: #F16D0E;color:white;">
@@ -51,6 +54,20 @@
                 </div>
             </div>
         </form>
+        <script>
+        var address = document.getElementById('address')
+        address.style.display = "none";
+        function entryChange2(){
+            if(document.getElementById('method')){
+                id = document.getElementById('method').value;
+                if(id == '1'){
+                    address.style.display = "block";
+                }
+                if(id == '2'){
+                    address.style.display = "none";
+                }
+            }
+        }
+        </script>
 </body>
-@endforeach
 @endsection

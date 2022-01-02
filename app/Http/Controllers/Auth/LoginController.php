@@ -37,5 +37,16 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+//     public function artistLogout( Request $request )
+// {
+//     if(Auth::guard('artist')->check()) // this means that the admin was logged in.
+//     {
+//         Auth::guard('artist')->logout();
+//         return redirect()->route('artist.login');
+//     }
+// }
+
+
     
 }

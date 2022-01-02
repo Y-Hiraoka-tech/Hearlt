@@ -1,4 +1,4 @@
-@extends('layouts.createaccount')
+]@extends('layouts.createaccount')
 
 @section('content')
 <link rel="preconnect" href="https://fonts.gstatic.com">

@@ -50,9 +50,11 @@ class EditAccountController extends Controller
         $user = User::find($id);
         return view('ruts.private',['user' => $user]);
     }
-    public function PrivateUpdate(Request $request)
+    
+    public function privateUpdate(Request $request)
     {
-        $user = User::find(auth()->id());
+        $id = Auth::id();
+        $user = User::find($id);
         if($user->private == 0){
             $user->private = 1;
         }
